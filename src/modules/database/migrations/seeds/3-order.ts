@@ -6,6 +6,13 @@ import { IS_DEV } from 'settings';
 export async function seed(knex: Knex): Promise<void> {
   if (!IS_DEV) return;
 
+  const orders = await knex
+    .count()
+    .from('Order')
+    .first();
+
+  if (Number(orders.count) >= 100) return;
+
   for (let x = 0; x < 100; x++) {
     const order: IOrder = {
       valor: parseInt(faker.finance.amount(1, 50000)),
